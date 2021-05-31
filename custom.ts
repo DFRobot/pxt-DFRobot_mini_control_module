@@ -36,6 +36,21 @@ namespace custom {
      //% block="init I2C"
     export function initEquipment():void{
         init();
+        pins.i2cWriteNumber(addrI2C, 0xB2, NumberFormat.Int8LE);
+        //basic.pause(100)
+        let bufferX = pins.i2cReadBuffer(addrI2C, 2);
+        let buttonData = bufferX[0]<<8|bufferX[1];
+        while(buttonData == 0){
+            basic.showIcon(IconNames.No)
+            basic.pause(100)
+            basic.clearScreen()
+            basic.pause(100)
+            bufferX = pins.i2cReadBuffer(addrI2C, 2);
+            buttonData = bufferX[0]<<8|bufferX[1];
+        }
+        basic.showIcon(IconNames.Yes)
+            basic.pause(100)
+            basic.clearScreen()
     }
     
     /**
